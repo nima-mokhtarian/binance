@@ -1,0 +1,1807 @@
+{
+	"info": {
+		"_postman_id": "bf88599e-9577-40b7-bdc6-b7aea26a9e8c",
+		"name": "Binance API (Spot + Futures)",
+		"description": "Comprehensive Postman collection for Binance REST APIs (Spot + USDT-M Futures). Includes public and signed endpoints, with automatic timestamp and HMAC-SHA256 signature in pre-request script. Source docs: https://developers.binance.com/",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34129784",
+		"_collection_link": "https://abank-backend-b.postman.co/workspace/ea8e1869-5f7e-4d43-8007-57552523ed45/collection/34129784-bf88599e-9577-40b7-bdc6-b7aea26a9e8c?action=share&source=collection_link&creator=34129784"
+	},
+	"item": [
+		{
+			"name": "Spot - Public",
+			"item": [
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/ping",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"ping"
+							]
+						},
+						"description": "Test connectivity to the REST API."
+					},
+					"response": []
+				},
+				{
+					"name": "Server Time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/time",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"time"
+							]
+						},
+						"description": "Get server time."
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/exchangeInfo",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"exchangeInfo"
+							]
+						},
+						"description": "Get current exchange trading rules and symbol information."
+					},
+					"response": []
+				},
+				{
+					"name": "Order Book (Depth)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/depth?symbol=BTCUSDT&limit=100",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"depth"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Get order book."
+					},
+					"response": []
+				},
+				{
+					"name": "Recent Trades List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/trades?symbol=BTCUSDT&limit=10",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"trades"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get recent trades."
+					},
+					"response": []
+				},
+				{
+					"name": "Klines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=100",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"klines"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "interval",
+									"value": "1h"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Kline/candlestick data."
+					},
+					"response": []
+				},
+				{
+					"name": "Avg Price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/avgPrice?symbol=BTCUSDT",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"avgPrice"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								}
+							]
+						},
+						"description": "Current average price for a symbol."
+					},
+					"response": []
+				},
+				{
+					"name": "24hr Ticker Price Change",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/ticker/24hr?symbol=BTCUSDT",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"ticker",
+								"24hr"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								}
+							]
+						},
+						"description": "24-hour rolling window price change statistics."
+					},
+					"response": []
+				},
+				{
+					"name": "Symbol Price Ticker",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/ticker/price?symbol=BTCUSDT",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"ticker",
+								"price"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								}
+							]
+						},
+						"description": "Latest price for a symbol."
+					},
+					"response": []
+				},
+				{
+					"name": "Symbol Order Book Ticker",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/ticker/bookTicker?symbol=BTCUSDT",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"ticker",
+								"bookTicker"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								}
+							]
+						},
+						"description": "Best price/qty on the order book."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Spot - Signed",
+			"item": [
+				{
+					"name": "Test New Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "side",
+									"value": "BUY"
+								},
+								{
+									"key": "type",
+									"value": "LIMIT"
+								},
+								{
+									"key": "timeInForce",
+									"value": "GTC"
+								},
+								{
+									"key": "quantity",
+									"value": "0.001"
+								},
+								{
+									"key": "price",
+									"value": "30000"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{spot_base}}/api/v3/order/test?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"order",
+								"test"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Test order (no matching engine)."
+					},
+					"response": []
+				},
+				{
+					"name": "New Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "side",
+									"value": "BUY"
+								},
+								{
+									"key": "type",
+									"value": "MARKET"
+								},
+								{
+									"key": "quoteOrderQty",
+									"value": "100"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{spot_base}}/api/v3/order?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"order"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Place a new order."
+					},
+					"response": []
+				},
+				{
+					"name": "Query Order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/order?symbol=BTCUSDT&orderId=123&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"order"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "orderId",
+									"value": "123"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Check an order's status."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/order?symbol=BTCUSDT&orderId=123&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"order"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "orderId",
+									"value": "123"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Cancel an active order."
+					},
+					"response": []
+				},
+				{
+					"name": "Current Open Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/openOrders?symbol=BTCUSDT&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"openOrders"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get all open orders."
+					},
+					"response": []
+				},
+				{
+					"name": "All Orders (History)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/allOrders?symbol=BTCUSDT&limit=50&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"allOrders"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get all account orders; active, canceled, or filled."
+					},
+					"response": []
+				},
+				{
+					"name": "Account Information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/account?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"account"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get current account information."
+					},
+					"response": []
+				},
+				{
+					"name": "Account Trade List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/myTrades?symbol=BTCUSDT&limit=50&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"myTrades"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get trades for a specific account and symbol."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Spot - User Data Stream",
+			"item": [
+				{
+					"name": "Create Listen Key",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/userDataStream",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"userDataStream"
+							]
+						},
+						"description": "Create a listenKey for user data stream (WebSocket)."
+					},
+					"response": []
+				},
+				{
+					"name": "Keepalive Listen Key",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/userDataStream?listenKey={{listenKey}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"userDataStream"
+							],
+							"query": [
+								{
+									"key": "listenKey",
+									"value": "{{listenKey}}"
+								}
+							]
+						},
+						"description": "Keepalive for listenKey."
+					},
+					"response": []
+				},
+				{
+					"name": "Close Listen Key",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/api/v3/userDataStream?listenKey={{listenKey}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"api",
+								"v3",
+								"userDataStream"
+							],
+							"query": [
+								{
+									"key": "listenKey",
+									"value": "{{listenKey}}"
+								}
+							]
+						},
+						"description": "Close a listenKey."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wallet (SAPI)",
+			"item": [
+				{
+					"name": "System Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/system/status",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"system",
+								"status"
+							]
+						},
+						"description": "Get system status."
+					},
+					"response": []
+				},
+				{
+					"name": "Account Snapshot (SPOT)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/accountSnapshot?type=SPOT&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"accountSnapshot"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "SPOT"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Daily account snapshot."
+					},
+					"response": []
+				},
+				{
+					"name": "Deposit History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/capital/deposit/hisrec?coin=USDT&status=1&limit=50&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"capital",
+								"deposit",
+								"hisrec"
+							],
+							"query": [
+								{
+									"key": "coin",
+									"value": "USDT"
+								},
+								{
+									"key": "status",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get deposit history."
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/capital/withdraw/history?coin=USDT&status=6&limit=50&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"capital",
+								"withdraw",
+								"history"
+							],
+							"query": [
+								{
+									"key": "coin",
+									"value": "USDT"
+								},
+								{
+									"key": "status",
+									"value": "6"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get withdraw history."
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw (Apply)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "coin",
+									"value": "USDT"
+								},
+								{
+									"key": "address",
+									"value": "YOUR_ADDRESS"
+								},
+								{
+									"key": "amount",
+									"value": "10"
+								},
+								{
+									"key": "network",
+									"value": "TRX"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/capital/withdraw/apply?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"capital",
+								"withdraw",
+								"apply"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Apply for withdrawal."
+					},
+					"response": []
+				},
+				{
+					"name": "Funding Wallet",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/asset/get-funding-asset?asset=USDT&needBtcValuation=true&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"asset",
+								"get-funding-asset"
+							],
+							"query": [
+								{
+									"key": "asset",
+									"value": "USDT"
+								},
+								{
+									"key": "needBtcValuation",
+									"value": "true"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get funding wallet asset details."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Margin (SAPI)",
+			"item": [
+				{
+					"name": "Margin Account Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/margin/account?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"margin",
+								"account"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Query cross margin account details."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Margin Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "side",
+									"value": "BUY"
+								},
+								{
+									"key": "type",
+									"value": "MARKET"
+								},
+								{
+									"key": "quantity",
+									"value": "0.001"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/margin/order?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"margin",
+								"order"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Place margin order."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Margin Loan History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/margin/loan?asset=USDT&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"margin",
+								"loan"
+							],
+							"query": [
+								{
+									"key": "asset",
+									"value": "USDT"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Margin loan history."
+					},
+					"response": []
+				},
+				{
+					"name": "Repay Margin Loan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "asset",
+									"value": "USDT"
+								},
+								{
+									"key": "amount",
+									"value": "10"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{spot_base}}/sapi/v1/margin/repay?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{spot_base}}"
+							],
+							"path": [
+								"sapi",
+								"v1",
+								"margin",
+								"repay"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Repay margin loan."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Futures UM - Public",
+			"item": [
+				{
+					"name": "Ping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/ping",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"ping"
+							]
+						},
+						"description": "Test connectivity."
+					},
+					"response": []
+				},
+				{
+					"name": "Server Time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/time",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"time"
+							]
+						},
+						"description": "Get server time."
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/exchangeInfo",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"exchangeInfo"
+							]
+						},
+						"description": "Get current exchange trading rules and symbol information."
+					},
+					"response": []
+				},
+				{
+					"name": "Order Book (Depth)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/depth?symbol=BTCUSDT&limit=100",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"depth"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Order book."
+					},
+					"response": []
+				},
+				{
+					"name": "Klines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/klines?symbol=BTCUSDT&interval=1h&limit=100",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"klines"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "interval",
+									"value": "1h"
+								},
+								{
+									"key": "limit",
+									"value": "100"
+								}
+							]
+						},
+						"description": "Klines."
+					},
+					"response": []
+				},
+				{
+					"name": "Ticker 24hr",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/ticker/24hr?symbol=BTCUSDT",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"ticker",
+								"24hr"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								}
+							]
+						},
+						"description": "24hr ticker."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Futures UM - Signed (USER_TRADE)",
+			"item": [
+				{
+					"name": "Account Info",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v2/account?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v2",
+								"account"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Futures account info."
+					},
+					"response": []
+				},
+				{
+					"name": "Position Information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v2/positionRisk?symbol=BTCUSDT&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v2",
+								"positionRisk"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Current position risk."
+					},
+					"response": []
+				},
+				{
+					"name": "Place Order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "side",
+									"value": "BUY"
+								},
+								{
+									"key": "type",
+									"value": "MARKET"
+								},
+								{
+									"key": "quantity",
+									"value": "0.001"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/order?timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"order"
+							],
+							"query": [
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "New futures order."
+					},
+					"response": []
+				},
+				{
+					"name": "Query Order",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/order?symbol=BTCUSDT&orderId=123&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"order"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "orderId",
+									"value": "123"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Query order."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/order?symbol=BTCUSDT&orderId=123&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"order"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "orderId",
+									"value": "123"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Cancel order."
+					},
+					"response": []
+				},
+				{
+					"name": "All Open Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/openOrders?symbol=BTCUSDT&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"openOrders"
+							],
+							"query": [
+								{
+									"key": "symbol",
+									"value": "BTCUSDT"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get all open orders."
+					},
+					"response": []
+				},
+				{
+					"name": "Income History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "X-MBX-APIKEY",
+								"value": "{{apiKey}}"
+							}
+						],
+						"url": {
+							"raw": "{{um_base}}/fapi/v1/income?limit=100&timestamp={{timestamp}}&recvWindow={{recvWindow}}&signature={{signature}}",
+							"host": [
+								"{{um_base}}"
+							],
+							"path": [
+								"fapi",
+								"v1",
+								"income"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "100"
+								},
+								{
+									"key": "timestamp",
+									"value": "{{timestamp}}"
+								},
+								{
+									"key": "recvWindow",
+									"value": "{{recvWindow}}"
+								},
+								{
+									"key": "signature",
+									"value": "{{signature}}"
+								}
+							]
+						},
+						"description": "Get income history."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-MBX-APIKEY",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{apiKey}}",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const isSigned = (pm.request.url.query.toObject()['signature'] !== undefined) || pm.request.url.query.toObject()['timestamp'] !== undefined || pm.request.body && pm.request.body.mode === 'urlencoded' && pm.request.body.urlencoded.some(p=>p.key==='signature' || p.key==='timestamp');",
+					"if (isSigned) {",
+					"  const ts = Date.now();",
+					"  pm.environment.set('timestamp', ts.toString());",
+					"  const recv = pm.environment.get('recvWindow') || '5000';",
+					"  pm.environment.set('recvWindow', recv);",
+					"  function buildQuery(){",
+					"    let pairs = [];",
+					"    pm.request.url.query.each(q => {",
+					"      if (!q.disabled && q.key && q.value && q.key !== 'signature') {",
+					"        pairs.push(encodeURIComponent(q.key)+'='+encodeURIComponent(q.value));",
+					"      }",
+					"    });",
+					"    const hasTs = pm.request.url.query.has('timestamp');",
+					"    if (!hasTs) pairs.push('timestamp='+ts);",
+					"    const hasRecv = pm.request.url.query.has('recvWindow');",
+					"    if (!hasRecv) pairs.push('recvWindow='+recv);",
+					"    if (pm.request.body && pm.request.body.mode === 'urlencoded') {",
+					"      pm.request.body.urlencoded.forEach(p => {",
+					"        if (!p.disabled && p.key && p.value && p.key !== 'signature') {",
+					"          pairs.push(encodeURIComponent(p.key)+'='+encodeURIComponent(p.value));",
+					"        }",
+					"      });",
+					"    }",
+					"    return pairs.join('&');",
+					"  }",
+					"  const queryString = buildQuery();",
+					"  const secret = pm.environment.get('apiSecret') || '';",
+					"  if (!secret) { console.warn('apiSecret not set in environment'); }",
+					"  const sig = CryptoJS.HmacSHA256(queryString, secret).toString(CryptoJS.enc.Hex);",
+					"  pm.environment.set('signature', sig);",
+					"  const method = pm.request.method.toUpperCase();",
+					"  if (method === 'GET' || method === 'DELETE') {",
+					"    const url = pm.request.url.toString();",
+					"    const join = url.includes('?') ? '&' : '?';",
+					"    pm.request.url = url + join + queryString + '&signature=' + sig;",
+					"  } else {",
+					"    if (!pm.request.body) pm.request.body = {};",
+					"    pm.request.body.mode = 'urlencoded';",
+					"    const params = queryString.split('&').map(kv => {",
+					"      const [k,v] = kv.split('=');",
+					"      return {key: decodeURIComponent(k), value: decodeURIComponent(v)};",
+					"    });",
+					"    params.push({key:'signature', value:sig});",
+					"    pm.request.body.urlencoded = params;",
+					"  }",
+					"}"
+				]
+			}
+		}
+	]
+}
