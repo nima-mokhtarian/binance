@@ -1,93 +1,150 @@
-# Binance
+# Binance Postman API Kit
 
+A ready-to-import Postman collection and environment for the Binance Spot,
+Margin, Wallet, and USDM Futures REST APIs, with request signing fully
+automated via a collection-level pre-request script — set your API
+key/secret and start calling signed endpoints immediately.
 
+## Table of Contents
 
-## Getting started
+- [Overview](#overview)
+- [Binance API Details](#binance-api-details)
+- [Getting Started](#getting-started)
+- [Auth Automation](#auth-automation)
+- [Available Endpoints](#available-endpoints)
+- [Contributing](#contributing)
+- [License](#license)
+- [Resources](#resources)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Overview
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+This repository packages Binance's public REST APIs into a single Postman
+collection (`Binance.postman_collection.json`) and a companion environment
+(`Binance.postman_environment.json`) covering Spot trading, Margin, Wallet
+(SAPI), the Spot User Data Stream, and USDM Futures — both public
+market-data endpoints and private, signed account/trading endpoints. The
+collection's pre-request script handles HMAC-SHA256 request signing for you,
+so you can go from import to a working signed request in minutes.
 
-## Add your files
+## Binance API Details
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+- **Base URLs**:
+  - Spot: `https://api.binance.com`
+  - USDM Futures: `https://fapi.binance.com`
+- **Authentication**: Private endpoints use HMAC-SHA256 query/body signing.
+  Every signed request needs a `timestamp`, an optional `recvWindow`, and a
+  `signature` computed over the request's parameters using your API secret,
+  plus an `X-MBX-APIKEY` header carrying your API key. See
+  [Auth Automation](#auth-automation) below for how this collection handles
+  that automatically.
+- **Rate limits**: Binance enforces rate limits that vary per endpoint
+  (weight-based limits, order-count limits, and IP-based limits). Rather
+  than restate numbers that change over time, consult the official docs
+  directly: [Spot API rate limits](https://binance-docs.github.io/apidocs/spot/en/#limits)
+  and the [Futures USDM API docs](https://binance-docs.github.io/apidocs/futures/en/)
+  for futures-specific limits.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/sigma_project/binance.git
-git branch -M main
-git push -uf origin main
-```
+## Getting Started
 
-## Integrate with your tools
+### Prerequisites
 
-* [Set up project integrations](https://gitlab.com/sigma_project/binance/-/settings/integrations)
+- [Postman](https://www.postman.com/downloads/) desktop or web client.
+- A Binance account with an API key and secret created for the endpoints you
+  intend to use (see Binance's own docs for how to create API keys with the
+  correct permissions).
 
-## Collaborate with your team
+### Installation
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+1. Import `Binance.postman_collection.json` into Postman
+   (File → Import, or drag-and-drop).
+2. Import `Binance.postman_environment.json` the same way.
+3. In Postman's environment selector (top right), select the imported
+   Binance environment.
+4. Open the environment and set `apiKey` and `apiSecret` to your own
+   credentials — for example `apiKey = YOUR_API_KEY` and
+   `apiSecret = YOUR_API_SECRET`. Never commit real values for these fields;
+   the environment file ships them empty on purpose.
+5. Send a request. Public endpoints work immediately; signed endpoints work
+   as soon as `apiKey`/`apiSecret` are set, with no further configuration.
 
-## Test and Deploy
+## Auth Automation
 
-Use the built-in continuous integration in GitLab.
+You do not need to open the collection's script to use it, but here is
+exactly what it does, so you always know what's happening under the hood.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+The collection has a single **collection-level pre-request script** that
+runs before every request in the collection:
 
-***
+1. **Detects whether the request needs signing.** It checks whether the
+   outgoing request already has a `signature` or `timestamp` parameter in
+   its query string, or a `signature`/`timestamp` field in an urlencoded
+   body. If none of these are present, the script does nothing further and
+   the request is sent as-is — this is how public endpoints (e.g. under
+   `Spot - Public`) stay untouched.
+2. **Injects `timestamp` and `recvWindow`.** For requests that do need
+   signing, it sets `timestamp` to the current time and `recvWindow` to the
+   value from the environment (defaulting to `5000` if unset).
+3. **Builds the exact query string to sign**, in the order Binance expects:
+   existing query parameters (excluding any pre-existing `signature`), then
+   `timestamp` and `recvWindow` if not already present, then any urlencoded
+   body parameters for POST/PUT-style signed requests.
+4. **Computes the signature.** It runs `CryptoJS.HmacSHA256(queryString,
+   apiSecret)` using the `apiSecret` value from your environment and encodes
+   the result as hex. If `apiSecret` is empty, it logs a console warning
+   instead of failing silently.
+5. **Attaches the signature to the request.** For `GET`/`DELETE` requests,
+   it appends the full signed query string (including `signature`) to the
+   URL. For other methods, it sets the request body to `urlencoded` mode
+   and populates it with the signed parameters.
+6. **Sends the API key.** Separately from the script, the collection's
+   authentication is configured as Postman's built-in API Key auth type,
+   set to add header `X-MBX-APIKEY` with value `{{apiKey}}` — inherited by
+   every request in the collection automatically.
 
-# Editing this README
+Net effect: fill in `apiKey`/`apiSecret` once in the environment, and every
+signed request in the collection authenticates correctly without any manual
+signature computation.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## Available Endpoints
 
-## Suggestions for a good README
+The collection is organized into 7 folders:
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+- **Spot - Public** — Spot market data that needs no authentication (order
+  book, recent trades, klines, ticker prices, exchange info, and similar).
+- **Spot - Signed** — Authenticated Spot trading and account endpoints
+  (placing/cancelling orders, account balances, order history) that require
+  HMAC-signed requests.
+- **Spot - User Data Stream** — Endpoints for creating, keeping alive, and
+  closing a `listenKey`-based user data stream (used for WebSocket account
+  updates); authenticated via API key rather than HMAC signing.
+- **Wallet (SAPI)** — Account/wallet-level operations under Binance's SAPI
+  surface (deposits, withdrawals, account status, and related wallet data).
+- **Margin (SAPI)** — Margin account trading and account-management
+  endpoints under SAPI.
+- **Futures UM - Public** — USDM (USDT-margined) Futures market data that
+  needs no authentication.
+- **Futures UM - Signed (USER_TRADE)** — Authenticated USDM Futures trading
+  and account endpoints requiring HMAC-signed requests.
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Contributions are welcome. If you find an endpoint that's missing, out of
+date, or incorrectly documented, please open an issue or merge/pull request.
+When editing the collection or environment JSON directly, validate your
+changes with `jq . <file>` before submitting to confirm the file is still
+valid Postman v2.1 schema JSON, and never include a real API key or secret
+in any example, screenshot, or committed file.
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project is licensed under the MIT License — see [LICENSE](./LICENSE)
+for the full text.
+
+## Resources
+
+- [Binance Spot API docs](https://binance-docs.github.io/apidocs/spot/en/) —
+  official documentation for Spot, Margin, and Wallet (SAPI) endpoints.
+- [Binance Futures API docs](https://binance-docs.github.io/apidocs/futures/en/) —
+  official documentation for USDM Futures endpoints.
+- [Postman documentation](https://learning.postman.com/docs/getting-started/introduction/) —
+  general getting-started guide for using Postman itself.

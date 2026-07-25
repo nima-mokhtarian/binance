@@ -1,0 +1,15 @@
+# JetBrains IDE
+/.idea/
+/shelf/
+/httpRequests/
+/dataSources/
+/dataSources.local.xml
+
+# macOS
+.DS_Store
+
+# Spec-kit local workflow state (not published)
+.claude/
+.specify/
+specs/
+CLAUDE.md
