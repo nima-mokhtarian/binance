@@ -1,9 +1,33 @@
 # Binance Postman API Kit
 
+[![Postman v2.1](https://img.shields.io/badge/Postman-collection%20v2.1-FF6C37)](https://www.postman.com/)
+![Requests](https://img.shields.io/badge/requests-44-0A66C2)
+![Auth](https://img.shields.io/badge/auth-HMAC--SHA256-6f42c1)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A ready-to-import Postman collection and environment for the Binance Spot,
 Margin, Wallet, and USDM Futures REST APIs, with request signing fully
 automated via a collection-level pre-request script — set your API
 key/secret and start calling signed endpoints immediately.
+
+## At a Glance
+
+| Item | Included |
+|---|---|
+| Configured requests | 44 |
+| API surfaces | Spot, Margin, Wallet/SAPI, User Data Stream, USDM Futures |
+| Public requests | Market data and service metadata |
+| Private requests | Account, wallet, margin, order, and futures operations |
+| Authentication | Automatic HMAC-SHA256 signing plus `X-MBX-APIKEY` |
+| Postman format | Collection schema v2.1 |
+
+```mermaid
+flowchart LR
+    U["Choose a request"] --> P["Collection pre-request script"]
+    P --> T["Add timestamp and recvWindow"]
+    T --> S["Compute HMAC-SHA256 signature"]
+    S --> B["Binance Spot or Futures API"]
+```
 
 ## Table of Contents
 
@@ -125,6 +149,18 @@ The collection is organized into 7 folders:
   needs no authentication.
 - **Futures UM - Signed (USER_TRADE)** — Authenticated USDM Futures trading
   and account endpoints requiring HMAC-signed requests.
+
+## Project Status
+
+The collection JSON and environment validate successfully with `jq` and ship
+without credentials. Binance changes API contracts and rate limits over time,
+so compare high-risk trading or withdrawal requests with the current official
+documentation before use.
+
+This repository is part of the
+[Crypto API Postman toolkit](https://github.com/nima-mokhtarian?tab=repositories),
+alongside collections for CoinGecko, CryptoQuant, CoinEx, Bitquery, Derive,
+Nobitex, and multi-chain wallet history.
 
 ## Contributing
 
